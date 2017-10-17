@@ -15,11 +15,76 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validation.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
+        <style type="text/css">
+            /* Center the loader */
+            .loader {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              z-index: 1;
+              width: 150px;
+              height: 150px;
+              margin: -75px 0 0 -75px;
+              border: 16px solid #f3f3f3;
+              border-radius: 50%;
+              border-top: 16px solid #3498db;
+              width: 120px;
+              height: 120px;
+              -webkit-animation: spin 2s linear infinite;
+              animation: spin 2s linear infinite;
+              display: none;
+
+                border-top: 16px solid #bfbfbf;
+                border-right: 16px solid #cc3031;
+                border-bottom: 16px solid #e9592c;
+            }
+
+            @-webkit-keyframes spin {
+              0% { -webkit-transform: rotate(0deg); }
+              100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+
+            /* Add animation to "page content" */
+            .animate-bottom {
+              position: relative;
+              -webkit-animation-name: animatebottom;
+              -webkit-animation-duration: 1s;
+              animation-name: animatebottom;
+              animation-duration: 1s
+            }
+
+            @-webkit-keyframes animatebottom {
+              from { bottom:-100px; opacity:0 } 
+              to { bottom:0px; opacity:1 }
+            }
+
+            @keyframes animatebottom { 
+              from{ bottom:-100px; opacity:0 } 
+              to{ bottom:0; opacity:1 }
+            }
+
+            #myDiv {
+              display: none;
+              text-align: center;
+            }
+        </style>        
     </head>
     <body>
         <div class="container">
             <div class="content">
+                <div id="loader-telf"> 
+                    <div class="loader"></div>
+                </div>
                 <div class="container-fluid">
+                    <h1>MANTENIMIENTO TELÉFONO</h1>
+                    <br/>
                     <form class="form-inline" id="addNewPhone" name="addNewPhone" method="POST">
                         <div class="row">                            
                             <div class="col-sm-6">
@@ -29,10 +94,10 @@
                                             <label for="strDoc">TIPO Busqueda:</label>
                                             <select name="strDoc" id="strDoc" class="form-control">
                                                 <option value="">Selecione tipo documento</option>
+                                                <option value="telefono"> TEL&Eacute;FONO </option>
                                                 <option value="dni"> DNI </option>
                                                 <option value="ruc"> RUC </option>
-                                                <option value="extranjeria"> CARNET DE EXTRANJER&Iacute;A </option>
-                                                <option value="telefono"> TEL&Eacute;FONO </option>
+                                                <option value="extranjeria"> CARNET DE EXTRANJER&Iacute;A </option>                                                
                                             </select>    
                                         </div>
                                     </div>
@@ -96,16 +161,15 @@
                     var numdoc = $(this).val();
                     var typeDoc = $("#strDoc").val();                    
                     if(numdoc.length >= 8 && typeDoc != ""){
-                        console.log(numdoc + " " + typeDoc);
+                        $(".loader").css('display', 'block');
                         $.post('http://192.168.1.112/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
-                            //console.log(data);
                             if(data != "0"){
-//                                $("#strNombre").val(data).attr('disabled', true);
-//                                $("#nameDNI").val(data);
+                                $(".loader").css('display', 'none');
                                 $("#tbTelfOper").html(data);
                             }else{
                                 $("#strNombre").val("").attr('disabled', false);
                                 $("#nameDNI").val('');
+                                $(".loader").css('display', 'none');
                                 alert("No se ha encontrado, numero telefonico, para este documento, agregarlo por favor."); 
                             }                        
                         });

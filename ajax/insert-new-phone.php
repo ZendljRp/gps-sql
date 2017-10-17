@@ -2,6 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: text/html;charset=utf-8");
 include '../conecction/conecction.php';
+include '../conecction/conecctionMySQL.php';
 $conn = conn();
 $values = [];
 if(!empty($_POST)){    
@@ -15,7 +16,9 @@ if(!empty($_POST)){
         $name = strtoupper(str_replace('+', ' ', $values['strNombre']));
     }else{
         $name = strtoupper(str_replace('+', ' ', $values['nameDNI']));
-    }   
+    } 
+    
+    $sqlMysql = "SELECT * FROM vicidial_list LIMIT 0, 15;";
     
     $insertListGo = "INSERT INTO vicidial_list(lead_id,"
             . "entry_date, status, list_id, gmt_offset_now, called_since_last_reset,phone_code,phone_number,"

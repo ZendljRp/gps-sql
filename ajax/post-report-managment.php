@@ -2,7 +2,8 @@
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: text/html;charset=utf-8");
 include '../conecction/conecction.php';
-$conn = conn();
+include '../conecction/conecctionMySQL.php';
+$connMySQL = connMySQL();
 $strStatus = "";
 if(!empty($_POST)){
     $fchIni = $_POST["fchini"];
@@ -11,10 +12,19 @@ if(!empty($_POST)){
     $respon = $_POST["optionsRadios"];//slctstatus
     $status = $_POST["slctstatus"];
     $sqlStatus = "SELECT status, status_name FROM vicidial_statuses";
-    $result = sqlsrv_query($conn, $sqlStatus);
-    while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+    echo var_dump($connMySQL) . '<br/>';
+    //$result = sqlsrv_query($conn, $sqlStatus);
+    /*while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
         $strStatus .= "'{$row['status_name']}', ";
+    }*/
+    
+    $result = $connMySQL->query($sqlStatus);
+    $result->execute();
+    while($row = $result->setFetchMode(PDO::FETCH_OBJ)){
+        $strStatus .= "$row->status_name <br/> ";
     }
+    echo $strStatus;
+    
     $strStatus = substr($strStatus, 0, -2);
     $sql = "SELECT per.varNombreors, gst.*
         FROM gpsgestiones gst
@@ -26,11 +36,24 @@ if(!empty($_POST)){
         AND gst.varOperador = 'DIRCON'
         ORDER BY gst.datFechagestion DESC"; 
     
-    $resultSearch = sqlsrv_query($conn, $sql);
+//    $resultSearch = sqlsrv_query($conn, $sql);
+//    
+//    while($rowa = sqlsrv_fetch_object($resultSearch)){
+//        echo "'{$rowa['varNombreors']}' <br/>";
+//    }
     
-    while($row = sqlsrv_fetch_array($resultSearch, SQLSRV_FETCH_ASSOC)){
-        echo "'{$row['varNombreors']}' <br/>";
-    }
+    
+//    $sqlMysql = "SELECT * FROM vicidial_list LIMIT 0, 15;";
+//    
+//    $mysql  = connMySQL();
+//    $stmt   = $mysql->query($sqlMysql);
+//    $stmt->execute();
+//    
+//    while($row = $stmt->setFetchMode(PDO::FETCH_OBJ)){
+//        echo $row->phone_number . "<br/>";
+//    }
+    
+    
     
     
 }

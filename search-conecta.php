@@ -18,15 +18,16 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         $addSQL = " AND varOperador = 'DIRCON'";
         //$addSQL = "";
     }    
-    $sql = "SELECT varCodprodinterno AS codproint, 
-                    varCodprodcliente AS codproclie, 
-                    varFechamora AS fechmora, 
-                    varMonedasaldo AS moneda, 
-                    decImportesaldo AS decimportsald, 
-                    decImportesalfooperativo AS decimportsaldoper, 
-                    decUltsaldoactinv AS decultsaldact
-            FROM gpscartera
-            WHERE varDocumento LIKE '%{$dni}%';"; 
+    $sql = "SELECT varCuenta AS codproint,
+        varOperacion AS codproclie,
+        varNombres AS nombre,
+        varDeuda_Actual AS deuda,
+        varEnCampana AS campania,
+        varFec_Vta AS fecha,
+        varEntidad AS entidad,
+        varUltFecPago AS ultimafechpago
+        FROM conectacartera
+        WHERE varDNI LIKE '%{$dni}%';"; 
     $stmt = sqlsrv_query($conn, $sql);
     if( $stmt === false ) {
         $hay= 0;
@@ -46,18 +47,21 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                         <td>$i</td>
                         <td>$row->codproint</td>
                         <td>$row->codproclie</td>
-                        <td>$row->fechmora</td>
-                        <td>$row->moneda</td>
-                        <td>$row->decultsaldact</td>
+                        <td>$row->nombre</td>
+                        <td>$row->deuda</td>
+                        <td>$row->campania</td>
+                        <td>$row->fecha</td>
+                        <td>$row->entidad</td>
+                        <td>$row->ultimafechpago</td>
                     </tr>";
         $i++;
     }
-    $sqlData = "SELECT per.varNombreors, (SELECT est.varDesgps FROM estadosgestion est WHERE est.varDesautodial = ges.varCodigorespuesta ) AS estadoDesc, ges.*
-        FROM gpsgestiones ges
-        INNER JOIN gpspersonas per
-        ON per.varDocumento = ges.varRut
-        WHERE varRut LIKE '%{$dni}%'$addSQL 
-        ORDER BY ges.datFechagestion DESC;";
+    $sqlData = "SELECT UPPER((SELECT est.varDesgps FROM estadosgestion est WHERE est.varDesautodial = gest.varCodigorespuesta )) AS estadoDesc, 
+        gest.* 
+        FROM ga_gestiones AS gest
+        WHERE gest.varrut NOT IN (SELECT varDocumento FROM gpspersonas)
+        AND gest.varrut LIKE '%{$dni}%' $addSQL
+        ORDER BY gest.datFechagestion DESC;";
     
     $stmtdata = sqlsrv_query($conn, $sqlData);
     
@@ -66,11 +70,10 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
     while( $row = sqlsrv_fetch_object($stmtdata) ) {
         $strResp .= "<tr>
                         <td style='text-align:center;'>$j</td>
-                        <td>".utf8_encode(utf8_decode($row->varNombreors))."</td>
-                        <td style='text-align:center;'>".$row->datFechagestion->format('d/m/Y')."</td>
+                        <td style='text-align:center;'>".$row->datfechagestion->format('d/m/Y')."</td>
                         <td style='text-align:center;'>".$row->varNumerotelefonico."</td>
                         <td>". strtoupper($row->estadoDesc)."</td>
-                        <td>".utf8_encode(utf8_decode($row->varObservaciones))."</td>
+                        <td>".utf8_encode(utf8_decode($row->varobservaciones))."</td>
                     </tr>";
         $j++;
     }
@@ -99,7 +102,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         <div class="container">
             <div class="content">
                 <div class="container-fluid">
-                    <form class="form-inline" id="formSearchCustomer" name="formSearchCustomer" method="POST" action="search-customer.php">
+                    <form class="form-inline" id="formSearchCustomer" name="formSearchCustomer" method="POST" action="search-conecta.php">
                         <div class="row">
                             <br/>
                             <div class="col-sm-6">
@@ -132,11 +135,14 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                         <thead>
                             <tr>
                                 <th class="text-center">Item</th>                            
-                                <th class="text-center">COD. PROD. INTERNO</th>
-                                <th class="text-center">COD. PROD. CLIENTE</th>
+                                <th class="text-center">CUENTA</th>
+                                <th class="text-center">OPERACION</th>
+                                <th class="text-center">NOMBRES</th>
+                                <th class="text-center">DEUDA</th>
+                                <th class="text-center">CAMPAÑA</th>
                                 <th class="text-center">FECH. MORA</th>
-                                <th class="text-center">MONEDA</th>
-                                <th class="text-center">IMP. ULT. SALDO ACTIVO</th>
+                                <th class="text-center">ENTIDAD</th>
+                                <th class="text-center">ULT. PAGO</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -149,12 +155,11 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                     <table class="table table-responsive table-striped" border="0">
                         <thead>
                             <tr>
-                                <th class="text-center" width="3%">Item</th>                            
-                                <th class="text-center" width="27%">NOMBRE</th>
+                                <th class="text-center" width="3%">Item</th>
                                 <th class="text-center" width="10%">FECH. GESTION</th>
                                 <th class="text-center" width="10%">TELÉFONO</th>
                                 <th class="text-center" width="15%">ESTADO</th>
-                                <th class="text-center" width="35%">OBSERVACIÓN</th>
+                                <th class="text-center" width="62%">OBSERVACIÓN</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,5 +175,3 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         
     </body>
 </html>
-
-
