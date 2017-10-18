@@ -6,17 +6,15 @@
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
-        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
-        
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css" />
+        <link href="http://192.168.1.112/gps-sql/assets/css/bootstrap/fonts/glyphicons-halflings-regular.woff" />
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validation.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.js"></script>
         <style type="text/css">
             /* Center the loader */
             .loader {
@@ -70,9 +68,17 @@
               to{ bottom:0; opacity:1 }
             }
 
-            #myDiv {
-              display: none;
-              text-align: center;
+            .block {
+		display: block;
+            }
+            form.cmxform label.error {
+                display: none;
+            }
+            #addNewPhone label.error {
+		margin-left: 10px;
+		width: auto;
+		display: inline;
+                color: red;
             }
         </style>        
     </head>
@@ -85,59 +91,61 @@
                 <div class="container-fluid">
                     <h1>MANTENIMIENTO TELÉFONO</h1>
                     <br/>
-                    <form class="form-inline" id="addNewPhone" name="addNewPhone" method="POST">
-                        <div class="row">                            
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="strDoc">TIPO Busqueda:</label>
-                                            <select name="strDoc" id="strDoc" class="form-control">
-                                                <option value="">Selecione tipo documento</option>
-                                                <option value="telefono"> TEL&Eacute;FONO </option>
-                                                <option value="dni"> DNI </option>
-                                                <option value="ruc"> RUC </option>
-                                                <option value="extranjeria"> CARNET DE EXTRANJER&Iacute;A </option>                                                
-                                            </select>    
-                                        </div>
+                    <div class="row">                        
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="strDoc">TIPO Busqueda:</label>
+                                        <select name="strDoc" id="strDoc" class="form-control" required>
+                                            <option value="">Selecione tipo documento</option>
+                                            <option value="telefono"> TEL&Eacute;FONO </option>
+                                            <option value="dni"> DNI </option>
+                                            <option value="ruc"> RUC </option>
+                                            <option value="extranjeria"> CARNET DE EXTRANJER&Iacute;A </option>                                                
+                                        </select>    
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="intNumdoc">NUMERO Busqueda:</label>
-                                            <input name="intNumdoc" id="intNumdoc" type="text" class="form-control" value="">
-                                        </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="intNumdoc">NUMERO Busqueda:</label>
+                                        <input name="intNumdoc" id="intNumdoc" type="text" class="form-control" value="">
                                     </div>
                                 </div>
                             </div>
-                            
-                            <table class="table table-responsive table-striped">
-                                <thead>
-                                    <th>Item</th>
-                                    <th>NOMBRE</th>
-                                    <th>TEL&Eacute;FONO</th>
-                                    <th>OPERADOR</th>
-                                </thead>
-                                <tbody id="tbTelfOper">                                    
-                                </tbody>
-                            </table>
-                            
-                            <div class="col-sm-6">
+                        </div>                            
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <th>Item</th>
+                                <th>NOMBRE</th>
+                                <th>TEL&Eacute;FONO</th>
+                                <th>OPERADOR</th>
+                                <th>CD</th>
+                            </thead>
+                            <tbody id="tbTelfOper">                                    
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <form class="form-inline" id="addNewPhone" name="addNewPhone" method="POST">
+                        <div class="row">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="strNombre">NOMBRE COMPLETO:</label>
-                                    <input name="strNombre" id="strNombre" type="text" class="form-control" value="">
+                                    <input name="strNombre" id="strNombre" type="text" class="form-control" value="" required>
                                     <input type="hidden" name="nameDNI" id="nameDNI" value="" />
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="strTelf">TEL&Eacute;FONO:</label>
-                                    <input name="strTelf" id="strTelf" type="text" class="form-control" value="" size="9" maxlength="9">
+                                    <input name="strTelf" id="strTelf" type="text" class="form-control" value="" size="9" maxlength="9" required>
                                 </div>
                             </div>                            
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="slctAgency">OPERADOR:</label>
-                                    <select name="slctAgency" id="slctAgency" class="form-control">
+                                    <select name="slctAgency" id="slctAgency" class="form-control" title="Seleccione opcion!" required>
                                         <option value="">Seleccione agencia</option>
                                         <option value="MOVISTAR">MOVISTAR PERÚ</option>
                                         <option value="CLARO">CLARO PERÚ</option>  
@@ -147,16 +155,55 @@
                                         <option value="OTROS">OTROS</option>   
                                     </select>
                                 </div>  
-                            </div>
+                            </div>                       
                         </div>                        
-                        <input type="button" id="btnAddPhone" name="btnAddPhone" value="AGREGAR" class="btn btn-default" />
+                        <input type="submit" id="btnAddPhone" name="btnAddPhone" value="AGREGAR" class="btn btn-default" />
                     </form>
                 </div>
             </div>
             <br/>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Correcto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>El telefono se agrego correctamente.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="myModalAdd" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Agregar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>No se encunetra registrado en nuestra base de datos el numero telefonico, para este documento, agregarlo por favor..</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
+                $(".chkuser").click(function(){
+                    alert("hola");
+                });
                 $("#intNumdoc").keyup(function(){
                     var numdoc = $(this).val();
                     var typeDoc = $("#strDoc").val();                    
@@ -170,11 +217,12 @@
                                 $("#strNombre").val("").attr('disabled', false);
                                 $("#nameDNI").val('');
                                 $(".loader").css('display', 'none');
-                                alert("No se ha encontrado, numero telefonico, para este documento, agregarlo por favor."); 
+                                $("#myModalAdd").modal();
                             }                        
                         });
                     }                    
                 });
+                
                 
                 $("#strTelf").keydown(function (e) {
                     // Allow: backspace, delete, tab, escape, enter and .
@@ -191,29 +239,77 @@
                         e.preventDefault();
                     }
                 });
-                
-                $("#btnAddPhone").on('click', function(){
-                    //alert("Hello World");
-                    var strDoc    = $("#strDoc").val();
-                    var intNumdoc = $("#intNumdoc").val();
-                    var strNombre = $("#strNombre").val();
-                    var strTelf   = $("#strTelf").val();
-                    var slctOperator = $("#slctAgency option:selected").val();
-                    var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator;
-                    //var datos = $("#addNewPhone").serialize();
-                    console.log(datos);
-                    $.post('http://192.168.1.112/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
-                        if(response == "1"){
-                            alert("Se agrego correctamente el telefono, a la persona en cuestion.");
-                            $("#strNombre").val("").attr('disabled', false);
-                            $("#nameDNI").val('');
-                            $("#addNewPhone")[0].reset();                            
-                        }else{
-                            console.log(response);
-                        }
-                    });
+                               
+                $("#slctAgency").validate({
                     
-                });                
+                });
+                $.validator.setDefaults({
+                    submitHandler: function() {
+                        var strDoc    = $("#strDoc").val();
+                        var intNumdoc = $("#intNumdoc").val();
+                        var strNombre = $("#strNombre").val();
+                        var strTelf   = $("#strTelf").val();
+                        var slctOperator = $("#slctAgency option:selected").val();
+                        var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator;
+                        $.post('http://192.168.1.112/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
+                            if(response == "1"){
+                                $("#myModal").modal();
+                                $("#strDoc").val('');
+                                $("#strNombre").val("").attr('disabled', false);
+                                $("#nameDNI").val('');
+                                $("#addNewPhone")[0].reset();                            
+                            }else{
+                                console.log(response);
+                            }
+                        });                        
+                    }
+                });
+               
+                $( "#addNewPhone" ).validate( {
+                    rules: {
+                        strNombre: "required",
+                        strTelf: {
+                            required: true,
+                            minlength: 7,
+                            maxlength: 9
+                        }
+                    },
+                    errorElement: "em",
+                    errorPlacement: function ( error, element ) {
+                        // Add the `help-block` class to the error element
+                        error.addClass( "alert-danger" );
+
+                        // Add `has-feedback` class to the parent div.form-group
+                        // in order to add icons to inputs
+                        element.parents( ".col-sm-5" ).addClass( "has-error" );
+
+                        if ( element.prop( "type" ) === "checkbox" ) {
+                            error.insertAfter( element.parent( "label" ) );
+                        } else {
+                            error.insertAfter( element );
+                        }
+                        // Add the span element, if doesn't exists, and apply the icon classes to it.
+                        if ( !element.next( "span" )[ 0 ] ) {
+                            $( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+                        }
+                    },
+                    success: function ( label, element ) {
+                        // Add the span element, if doesn't exists, and apply the icon classes to it.
+                        if ( !$( element ).next( "span" )[ 0 ] ) {
+                            $( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+                        }
+                    },
+                    highlight: function ( element, errorClass, validClass ) {
+                        $( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+                        $( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+                    },
+                    unhighlight: function ( element, errorClass, validClass ) {
+                        $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+                        $( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+                    }
+                } );
+                
+                
             });
         </script>
         
