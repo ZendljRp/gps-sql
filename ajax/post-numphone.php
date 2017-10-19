@@ -1,6 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header("Content-Type: text/html;charset=utf-8");
 include '../conecction/conecction.php';
 $conn = conn();
 $resultDNI = "";
@@ -17,20 +15,23 @@ if(!empty($_POST["doc"])){
     $i=1;    
     $result = sqlsrv_query($conn, $sql);
     while( $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC) ) {
-        $checked = ($row['cd'] == 1)?"checked":"";
-        $stringTable .= "<tr>";
-        $stringTable .= "<td>$i</td>";
-        $stringTable .= "<td>".htmlentities($row['varTitular'], ENT_QUOTES | ENT_HTML401, 'UTF-8')."</td>";
-        $stringTable .= "<td>".$row['varTelf']."</td>";
-        $stringTable .= "<td>".$row['varOperador']."</td>";
-        $stringTable .= "<td><input type=\"checkbox\" class=\"chkuser\" name=\"chkphone\" id=\"chkphone\" data-userv=\"{$row['idNumero']}\" ".$checked." /></td>";
-        $stringTable .= "</tr>";
+        $checked = ($row['cd'] == 1)?"btn-success":"btn-danger";
+        $boton   = ($row['cd'] == 1)?"CONFIRMADO":"CONFIRMAR";
+        $disable = ($row['cd'] == 1)?"disabled":"";
+    ?>
+    <tr>
+        <td><?=$i?></td>
+        <td><?=htmlentities($row['varTitular'], ENT_QUOTES | ENT_HTML401, 'UTF-8')?></td>
+        <td><?=$row['varTelf']?></td>
+        <td><?=$row['varOperador']?></td>
+        <td class="btnValite"><button type="button" class="btn <?=$checked?> btnValite" name="btnValite" id="btnValite" data-userv="<?=$row['idNumero']?>" <?=$disable?>><?=$boton?></button></td>
+        </tr>
+    <?php
         $i++;
     }
-}
-if(!empty($stringTable)){//$resultDNI
-    echo ($stringTable); //$resultDNI
 }else{
-    echo "0";
+?>
+9
+<?php
 }
- 
+?>

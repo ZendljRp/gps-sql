@@ -122,7 +122,7 @@
                                 <th>OPERADOR</th>
                                 <th>CD</th>
                             </thead>
-                            <tbody id="tbTelfOper">                                    
+                            <tbody id="tbTelfOper">
                             </tbody>
                         </table>
                     </div>
@@ -134,6 +134,7 @@
                                     <label for="strNombre">NOMBRE COMPLETO:</label>
                                     <input name="strNombre" id="strNombre" type="text" class="form-control" value="" required>
                                     <input type="hidden" name="nameDNI" id="nameDNI" value="" />
+                                    <input type="hidden" name="agente" id="agente" value="<?=$_REQUEST['agent']?>" />
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -195,13 +196,14 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
-                $(".chkuser").click(function(){
+                $("#btnValite").click(function(){
                     alert("hola");
                 });
                 $("#intNumdoc").keyup(function(){
@@ -210,6 +212,7 @@
                     if(numdoc.length >= 8 && typeDoc != ""){
                         $(".loader").css('display', 'block');
                         $.post('http://192.168.1.112/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
+                            console.log(data);
                             if(data != "0"){
                                 $(".loader").css('display', 'none');
                                 $("#tbTelfOper").html(data);
