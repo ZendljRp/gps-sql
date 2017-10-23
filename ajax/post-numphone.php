@@ -1,4 +1,7 @@
 <?php
+date_default_timezone_set('America/Lima');
+header('Access-Control-Allow-Origin: *');
+header("Content-Type: text/html;charset=utf-8");
 include '../conecction/conecction.php';
 $conn = conn();
 $resultDNI = "";
@@ -18,20 +21,37 @@ if(!empty($_POST["doc"])){
         $checked = ($row['cd'] == 1)?"btn-success":"btn-danger";
         $boton   = ($row['cd'] == 1)?"CONFIRMADO":"CONFIRMAR";
         $disable = ($row['cd'] == 1)?"disabled":"";
-    ?>
-    <tr>
-        <td><?=$i?></td>
-        <td><?=htmlentities($row['varTitular'], ENT_QUOTES | ENT_HTML401, 'UTF-8')?></td>
-        <td><?=$row['varTelf']?></td>
-        <td><?=$row['varOperador']?></td>
-        <td class="btnValite"><button type="button" class="btn <?=$checked?> btnValite" name="btnValite" id="btnValite" data-userv="<?=$row['idNumero']?>" <?=$disable?>><?=$boton?></button></td>
-        </tr>
-    <?php
+        $stringTable .= "<tr>";
+        $stringTable .= "<td>$i</td>";
+        $stringTable .= "<td>".htmlentities($row['varTitular'], ENT_QUOTES | ENT_HTML401, 'UTF-8')."</td>";
+        $stringTable .= "<td>".$row['varTelf']."</td>";
+        $stringTable .= "<td>".$row['varOperador']."</td>";
+        $stringTable .= "<td><button type=\"button\" class=\"btn ".$checked." btnValite\" name=\"btnValite\" data-userv=\"".$row['idNumero']."\" $disable>$boton</button></td>";
+        $stringTable .= "</tr>";
         $i++;
     }
-}else{
-?>
-9
-<?php
 }
+if(!empty($stringTable)){//$resultDNI
+    echo ($stringTable); //$resultDNI
 ?>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btnValite").click(function(){
+                var id = $(this).data("userv");
+                var user = $("#agente").val();
+                $.post('http://192.168.1.112/gps-sql/ajax/post-update-status.php', {id:id,user:user}, function(data){
+                    if(data == '1'){
+                        alert("Confirmacion con exito.");
+                        location.reload();
+                    }else{
+                        alert("No se ha confirmado la peticion.");
+                    }
+                });
+            });
+        });
+    </script>
+<?php
+}else{
+    echo "0";
+}
+ 

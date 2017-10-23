@@ -132,7 +132,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="strNombre">NOMBRE COMPLETO:</label>
-                                    <input name="strNombre" id="strNombre" type="text" class="form-control" value="" required>
+                                    <input style="text-transform: uppercase" name="strNombre" id="strNombre" type="text" class="form-control" value="" required>
                                     <input type="hidden" name="nameDNI" id="nameDNI" value="" />
                                     <input type="hidden" name="agente" id="agente" value="<?=$_REQUEST['agent']?>" />
                                 </div>
@@ -147,7 +147,7 @@
                                 <div class="form-group">
                                     <label for="slctAgency">OPERADOR:</label>
                                     <select name="slctAgency" id="slctAgency" class="form-control" title="Seleccione opcion!" required>
-                                        <option value="">Seleccione agencia</option>
+                                        <option value="">Seleccione operador</option>
                                         <option value="MOVISTAR">MOVISTAR PERÚ</option>
                                         <option value="CLARO">CLARO PERÚ</option>  
                                         <option value="ENTEL">ENTEL PERÚ</option>
@@ -200,19 +200,33 @@
                     </div>
                 </div>
             </div>
+            
+            <div id="myWarring" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Advertencia</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>El número telefónico, ya existe.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#btnValite").click(function(){
-                    alert("hola");
-                });
                 $("#intNumdoc").keyup(function(){
                     var numdoc = $(this).val();
                     var typeDoc = $("#strDoc").val();                    
                     if(numdoc.length >= 8 && typeDoc != ""){
                         $(".loader").css('display', 'block');
                         $.post('http://192.168.1.112/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
-                            console.log(data);
                             if(data != "0"){
                                 $(".loader").css('display', 'none');
                                 $("#tbTelfOper").html(data);
@@ -220,13 +234,12 @@
                                 $("#strNombre").val("").attr('disabled', false);
                                 $("#nameDNI").val('');
                                 $(".loader").css('display', 'none');
-                                $("#myModalAdd").modal();
+                                $("#tbTelfOper").remove();
+                                $("#myModalAdd").modal();                                
                             }                        
                         });
                     }                    
                 });
-                
-                
                 $("#strTelf").keydown(function (e) {
                     // Allow: backspace, delete, tab, escape, enter and .
                     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
@@ -252,15 +265,19 @@
                         var intNumdoc = $("#intNumdoc").val();
                         var strNombre = $("#strNombre").val();
                         var strTelf   = $("#strTelf").val();
+                        var agente   = $("#agente").val();
                         var slctOperator = $("#slctAgency option:selected").val();
-                        var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator;
+                        var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator+"&agente="+agente;
                         $.post('http://192.168.1.112/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
-                            if(response == "1"){
+                            if(response == "ok"){
                                 $("#myModal").modal();
                                 $("#strDoc").val('');
                                 $("#strNombre").val("").attr('disabled', false);
                                 $("#nameDNI").val('');
-                                $("#addNewPhone")[0].reset();                            
+                                location.reload();                            
+                            }else if(response == "701"){
+                                $("#myWarring").modal();
+                                location.reload();
                             }else{
                                 console.log(response);
                             }
@@ -310,8 +327,7 @@
                         $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
                         $( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
                     }
-                } );
-                
+                } );          
                 
             });
         </script>
