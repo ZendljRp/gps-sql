@@ -10,7 +10,7 @@ if(!empty($_POST)){
     $operad = $_POST["slctoperador"];
     $respon = $_POST["optionsRadios"];//slctstatus
     $status = $_POST["slctstatus"];
-    
+
     $sql = "SELECT per.varNombreors, gst.*
         FROM gpsgestiones gst
         INNER JOIN gpspersonas per
@@ -27,6 +27,7 @@ if(!empty($_POST)){
     }*/
     
     $result = $connMySQL->query($sqlStatus);
+
     $result->execute();
     while($row = $result->setFetchMode(PDO::FETCH_OBJ)){
         $strStatus .= "$row->status_name <br/> ";

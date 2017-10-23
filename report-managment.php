@@ -31,23 +31,24 @@
                 <div class="input-group">
                     <select class="form-control" name="slctoperador">
                         <option value="">Seleccionar Operador</option>
-                        <option value="todos">Todos</option>
+                        <option value="1">Todos</option>
                         <option value="operador1">Operador 1</option>
                         <option value="operador2">Operador 2</option>
                         <option value="operador3">Operador 3</option>
                         <option value="operador4">Operador 4</option>
                         <option value="operador5">Operador 5</option>
                         <option value="operador6">Operador 6</option>
-                        <option value="VCDAD">VCDAD</option>
+                        <option value="VDAD">VDAD</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
                     <select class="form-control" name="slctstatus">
-                        <option value="">Seleccionar Estados</option>
-                        <option value="1">DIRCON</option>
-                        <option value="2">GPS</option>
-                        <option value="3">CONECTA</option>
+                        <option value="">Seleccionar Agencia</option>
+                        <option value="1">TODOS</option>
+                        <option value="2">DIRCON</option>
+                        <option value="3">GPS</option>
+                        <option value="4">CONECTA</option>
                     </select>
                 </div>
             </div>
@@ -67,7 +68,7 @@
                 </label>
             </div>
             <br><br>            	
-            <button type="button" id="btnSearchReport" name="btnSearchReport" class="btn btn-default">Buscar</button>
+            <button type="submit" id="btnSearchReport" name="btnSearchReport" class="btn btn-default">Buscar</button>
         </form>
         
         <div class="container hide">
@@ -100,6 +101,8 @@
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js">
+        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.js">
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.date').datepicker({
@@ -117,6 +120,8 @@
                     });
                     
                 });
+
+                $("#tblReportManagment").datatable();
             });
         </script>        
     </body>
