@@ -1,9 +1,9 @@
 <?php
 function conn(){
-    $serverName = "LAPTOP-BD2FRCGI\SERVER"; //serverName\instanceName
+    $serverName = "APOLO"; //serverName\instanceName "LAPTOP-BD2FRCGI\SERVER"
     // Puesto que no se han especificado UID ni PWD en el array  $connectionInfo,
     // La conexión se intentará utilizando la autenticación Windows.
-    $connectionInfo = array( "Database"=>"Dircrm", "UID"=>"sa", "PWD"=>".");
+    $connectionInfo = array( "Database"=>"Dircrm", "UID"=>"sa", "PWD"=>"d1rc0n$$"); //"Database"=>"Dircrm", "UID"=>"sa", "PWD"=>"."
     $conn = sqlsrv_connect( $serverName, $connectionInfo);
     if( $conn ) {
         $connect = $conn;
