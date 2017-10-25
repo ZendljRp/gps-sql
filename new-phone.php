@@ -274,10 +274,10 @@
                                 $("#strDoc").val('');
                                 $("#strNombre").val("").attr('disabled', false);
                                 $("#nameDNI").val('');
-                                location.reload();                            
+                                //location.reload();                            
                             }else if(response == "701"){
                                 $("#myWarring").modal();
-                                location.reload();
+                                //location.reload();
                             }else{
                                 console.log(response);
                             }

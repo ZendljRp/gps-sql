@@ -3,38 +3,55 @@ header('Access-Control-Allow-Origin: *');
 header("Content-Type: text/html;charset=utf-8");
 include '../conecction/conecction.php';
 $conn = conn();
-$strStatus = "";
+$arrResult = array();
 if(!empty($_POST)){
-    $fchIni = $_POST["fchini"];
-    $fchFin = $_POST["fchfin"];
-    $operad = $_POST["slctoperador"];
-    $respon = $_POST["optionsRadios"];//slctstatus
-    $status = $_POST["slctstatus"];
+    $fchIni = !empty($_POST["fchini"])?$_POST["fchini"]:NULL;
+    $fchFin = !empty($_POST["fchfin"])?$_POST["fchfin"]:NULL;
+    $operad = !empty($_POST["slctoperador"])?$_POST["slctoperador"]:NULL;
+    $respon = !empty($_POST["optionsRadios"])?$_POST["optionsRadios"]:NULL;
+    $client = !empty($_POST["slctcliente"])?$_POST["slctcliente"]:NULL;
 
-    $sql = "SELECT per.varNombreors, gst.*
-        FROM gpsgestiones gst
-        INNER JOIN gpspersonas per
-        ON gst.varRut = per.varDocumento
-        WHERE gst.varCodigorespuesta IN ($strStatus)
-        AND gst.datFechagestion BETWEEN '$fchIni' AND '$fchFin'
-        AND gst.varAgente = '$operad'
-        AND gst.varOperador = 'DIRCON'
-        ORDER BY gst.datFechagestion DESC"; 
+    $fchInit = changeDate($fchIni);
+    $fchEnd  = changeDate($fchFin);
 
-    //$result = sqlsrv_query($conn, $sqlStatus);
-    /*while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-        $strStatus .= "'{$row['status_name']}', ";
-    }*/
-    
-    $result = $connMySQL->query($sqlStatus);
+    $sql = "SELECT per.varNombreors AS nombre, gst.varRut AS documento, 
+            gst.datFechagestion AS fecha, gst.varNumerotelefonico AS telefono, 
+            gst.varCodigorespuesta AS codigogestion,  gst.varTipogestion AS tipogestion,             
+            gst.varObservaciones AS observacion, gst.varAgente AS agente, 
+            gst.intNumsec AS tiempollamada FROM gpsgestiones gst 
+        INNER JOIN gpspersonas per ON gst.varRut = per.varDocumento WHERE gst.varAgente = '".$operad."'  "
+        . "AND gst.idCliente = '$client'  AND gst.varOperador = 'DIRCON' AND gst.datFechagestion BETWEEN '".$fchInit."' AND '".$fchEnd."' ORDER BY gst.datFechagestion DESC "; 
 
-    $result->execute();
-    while($row = $result->setFetchMode(PDO::FETCH_OBJ)){
-        $strStatus .= "$row->status_name <br/> ";
+    //$stmt = sqlsrv_query($conn, $sql);
+    $stmt = $conn->query($sql);
+    if ($stmt == FALSE){
+        die(FormatErrors($conn->errorInfo()));
     }
-    echo $strStatus;
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($row == FALSE){
+	FormatErrors ($stmt->errorInfo());
+    }
     
-    $strStatus = substr($strStatus, 0, -2);
+    $i = 1;
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){        
+        /*array_push($arrResult, array('item' => $i,
+            'nombre' => $row["nombre"],
+            'documento'    => $row["documento"],
+            'fecha'        => $row["fecha"],
+            'telefono'     => $row["telefono"],
+            'tipogestion'  => $row["tipogestion"],
+            'codigogestion' => $row["codigogestion"],       
+            'observacion'  => $row["observacion"],
+            'agente'       => $row["agente"],
+            'tiempollamada' => $row["tiempollamada"]));
+        $i++;*/
+        /*$arrayContent = array(
+            ""
+        );*/
+    } 
+    echo var_dump($row);
+    
+    //$strStatus = substr($strStatus, 0, -2);
     
     
 //    $resultSearch = sqlsrv_query($conn, $sql);
@@ -57,4 +74,10 @@ if(!empty($_POST)){
     
     
     
+}
+
+function changeDate($dateChange){
+    $predate = explode('/', $dateChange);
+    $newdate = implode('', array($predate[2],$predate[1],$predate[0]));
+    return $newdate;
 }
