@@ -31,6 +31,7 @@ if(!empty($_POST["doc"])){
         $i++;
     }
 }
+
 if(!empty($stringTable)){//$resultDNI
     echo ($stringTable); //$resultDNI
 ?>
