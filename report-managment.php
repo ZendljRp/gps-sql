@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
         <style type="text/css"> 
         #packt {
             padding-top: 25px;
@@ -74,7 +76,7 @@
         </div>       
         <br/>
         <div class="container">
-            <table class="table table-responsive table-striped">
+            <table id="reportTabl" class="table table-responsive table-striped display" cellspacing="0" width="100%">
                 <thead>
                     <th>ITEM</th>
                     <th>NOMBRE</th>
@@ -96,10 +98,13 @@
         
         <script src="http://192.168.1.112/gps-sql/assets/js/jquery.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
+        
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.date').datepicker({
@@ -110,15 +115,30 @@
                 
                 $("#btnSearchReport").click(function(){
                     var alldata = $("#formSearchReport").serialize();
-                    alert(alldata);
-                    $.post('http://192.168.1.112/gps-sql/ajax/post-report-managment.php', alldata, function(response){
-                        console.log(response); 
-                        $("#resultData").attr(response);
+                    $.post('http://192.168.1.112/gps-sql/ajax/post-report-managment.php', alldata, function(response){                        
+                        $('#reportTabl').DataTable( {  
+                            "bServerSide": true,
+                            "ajax": "http://192.168.1.112/gps-sql/assets/file/report/report-managment.txt",                               
+                            paging: false,
+                            searching: false,
+                            "columns": [
+                                    { "data": "item" },
+                                    { "data": "nombre" },
+                                    { "data": "documento" },
+                                    { "data": "fecha" },
+                                    { "data": "telefono" },
+                                    { "data": "tipogestion" },
+                                    { "data": "codigogestion" },
+                                    { "data": "observacion" },
+                                    { "data": "agente" },
+                                    { "data": "tiempollamada" }
+                            ],
+                            "bDestroy": true
+                        }); 
+                        $("#resultData").html(response);
                     });
                     
                 });
-
-                
             });
         </script>        
     </body>
