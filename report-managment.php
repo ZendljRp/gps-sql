@@ -8,6 +8,7 @@
         <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
         <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
+        
         <style type="text/css"> 
         #packt {
             padding-top: 25px;
@@ -15,6 +16,10 @@
             padding-right: 50px;
             padding-left: 50px;
         }
+        table.fixedHeader-floating{position:fixed !important;background-color:white;top: -7px !important;}
+        table.fixedHeader-floating.no-footer{border-bottom-width:0}
+        table.fixedHeader-locked{position:absolute !important;background-color:white}
+        @media print{table.fixedHeader-floating{display:none}}
         </style>
     </head>
     <body id="packt">
@@ -77,7 +82,7 @@
         <br/>
         <div class="container">
             <table id="reportTabl" class="table table-responsive table-striped display" cellspacing="0" width="100%">
-                <thead>
+                <thead style="font-size: 11px; font-weight: 600;">
                     <th>ITEM</th>
                     <th>NOMBRE</th>
                     <th>DOCUMENTO</th>
@@ -89,7 +94,7 @@
                     <th>OPERADOR</th>
                     <th>DURACION(seg)</th>
                 </thead>
-                <tbody>                    
+                <tbody style="font-size: 11px;">                    
                 </tbody>                
             </table>  
             <div id="resultData">                
@@ -104,6 +109,7 @@
         <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
         
         <script type="text/javascript">
             $(document).ready(function(){
@@ -116,11 +122,8 @@
                 $("#btnSearchReport").click(function(){
                     var alldata = $("#formSearchReport").serialize();
                     $.post('http://192.168.1.112/gps-sql/ajax/post-report-managment.php', alldata, function(response){                        
-                        $('#reportTabl').DataTable( {  
-                            "bServerSide": true,
-                            "ajax": "http://192.168.1.112/gps-sql/assets/file/report/report-managment.txt",                               
-                            paging: false,
-                            searching: false,
+                        $('#reportTabl').DataTable( {                            
+                            "ajax": "http://192.168.1.112/gps-sql/assets/file/report/report-managment.txt",
                             "columns": [
                                     { "data": "item" },
                                     { "data": "nombre" },
@@ -133,9 +136,12 @@
                                     { "data": "agente" },
                                     { "data": "tiempollamada" }
                             ],
+                            fixedHeader: {
+                                header: true
+                            },
                             "bDestroy": true
                         }); 
-                        $("#resultData").html(response);
+                        //$("#resultData").html(response);
                     });
                     
                 });

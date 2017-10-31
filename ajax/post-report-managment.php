@@ -48,37 +48,16 @@ if(!empty($_POST)){
             . '"observacion":"'.utf8_encode($row->observacion).'",'
             . '"agente":"'.utf8_encode($row->agente).'",'
             . '"tiempollamada":"'.$row->tiempollamada.'"},';
-        /*array_push($arrResult["data"], array('item' => $i,
-            'nombre'        => utf8_encode($row->nombre),
-            'documento'     => $row->documento,
-            'fecha'         => $row->fecha->format("d/m/Y H:i:s"),
-            'telefono'      => $row->telefono,
-            'tipogestion'   => utf8_encode($row->tipogestion),
-            'codigogestion' => utf8_encode($row->codigogestion),       
-            'observacion'   => utf8_encode($row->observacion),
-            'agente'        => utf8_encode($row->agente),
-            'tiempollamada' => $row->tiempollamada));*/
-        
-        //$json .= json_encode($arrResult["data"], JSON_FORCE_OBJECT);
         $i++;
     }
     $jsonStringBest = substr($jsonString, 0, -1);
-    $jsonStringBest .= "]}";
-    //$json = json_decode($jsonStringBest);
-    //$bestJson = json_encode($jsonStringBest, JSON_FORCE_OBJECT);
-    //echo var_dump($arrResult);    
+    $jsonStringBest .= "]}";   
     echo $jsonStringBest;
     $fichero = 'report-managment.txt';
-    $myfile = fopen("http://localhost/gps-sql/assets/file/report/$fichero", "wb") or die("Unable to open file!");
-    $txt = $jsonStringBest;
-    fwrite($myfile, $txt);
+    $myfile = fopen("F:/xampp/htdocs/gps-sql/assets/file/report/$fichero", "wb") or die("Unable to open file!");
+    $txt = $jsonStringBest; 
+    fwrite($myfile, $txt);    
     fclose($myfile);
-    
-    $actual = file_get_contents($txt);
-    // Añade una nueva persona al fichero
-    $actual .= "John Smith\n";
-    // Escribe el contenido al fichero
-    file_put_contents($fichero, $actual);
     
 }
 
