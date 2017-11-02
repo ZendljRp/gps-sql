@@ -301,7 +301,7 @@ if (!empty($_POST["btnAgregar"])) {
             </div>
         </div> 
         <!-- Latest compiled and minified JavaScript -->
-        <script src="http://192.168.1.112/gps-sql/assets/js/jquery.2.2.4.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
         <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
