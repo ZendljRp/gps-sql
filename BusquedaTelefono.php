@@ -97,21 +97,18 @@ $strData ="";
     //$result = sqlsrv_execute($stmt);
     while( $row = sqlsrv_fetch_object($stmt) ) { 
       $strData .= "<tr>
-                        <td>".$i."</td>
-                        <td>".getcliente($row->Cliente)."</td>
-                        <td style='text-align:center;'><input type='text' name='fechagestion' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
-                        <td>".$row->Numerotelefonico."</td>
-                        <td><input type='text' class='text Dni' name='Dni' value='".$row->DNI."'/></td>
-                        <td>".getEstado($row->Estado)."</td>
-                        <td>".$row->Observacion."</td>
-                        <td>".$row->Agente."</td>
-                        <td style='text-align:center;'><input class='chckSelec checkedsi' type='checkbox' name='chckSelec' data-idgagestion='".$row->id."'/></td>
-                    </tr>";
-                $i++;
-            }
-
-
-
+                <td>".$i."</td>
+                <td>".getcliente($row->Cliente)."</td>
+                <td style='text-align:center;'><input type='text' name='fechagestion' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
+                <td>".$row->Numerotelefonico."</td>
+                <td><input type='text' class='text Dni' name='Dni' value='".$row->DNI."'/></td>
+                <td>".getEstado($row->Estado)."</td>
+                <td>".$row->Observacion."</td>
+                <td>".$row->Agente."</td>
+                <td style='text-align:center;'><input class='chckSelec checkedsi' type='checkbox' name='chckSelec' data-idgagestion='".$row->id."'/></td>
+            </tr>";
+        $i++;
+    }
 
 if (!empty($_POST["btnAgregar"])) {
     $conn = conn();
@@ -143,26 +140,16 @@ if (!empty($_POST["btnAgregar"])) {
         
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/dataTables.css"  />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/DataTables/css/dataTables.bootstrap.css"  />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/alertify.min.css" />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/themes/default.min.css" />
-        <link href="http://localhost/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
-        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/jquery.dataTables.css">
-        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css"  />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css"  />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/alertify.min.css" />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/themes/default.min.css" />
+        <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="http://localhost/gps-sql/assets/js/jquery.2.2.4.js" crossorigin="anonymous"></script>
-        <script src="http://localhost/gps-sql/assets/css/bootstrap/js/bootstrap.js" crossorigin="anonymous"></script>         
-        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/jquery.dataTables.js"></script>
-        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/dataTables.bootstrap.js"></script>
-        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
-        <script src="http://localhost/gps-sql/assets/alertafy/alertify.min.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        
         
         
     </head>
@@ -302,18 +289,27 @@ if (!empty($_POST["btnAgregar"])) {
                         </tbody>
                     </table>
                         <ul class = "pagination">
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">1</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">2</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">3</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">4</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">5</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">1</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">2</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">3</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">4</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">5</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
                         </ul>
                 </div>        
             </div>
         </div> 
-        <script type="text/JavaScript">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="http://192.168.1.112/gps-sql/assets/js/jquery.2.2.4.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/alertafy/alertify.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script type="text/javascript">
             function validar(){
                     var micampo = document.getElementById("strInput").value;
                     if (micampo.length== 0|| /^\s+$/.test(micampo)) {
@@ -366,7 +362,7 @@ if (!empty($_POST["btnAgregar"])) {
                     $('.Guardar').click(function(){
                         var alldata = $("#tableTelefono").serialize();
                         alert(alldata);
-                        $.post('http://localhost/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
+                        $.post('http://192.168.1.112/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
                             console.log(response); 
                             $("#resultData").attr(response);
                             });
