@@ -37,8 +37,26 @@ if(!empty($stringTable)){//$resultDNI
 ?>
     <script type="text/javascript">
         $(document).ready(function(){
-            $(".btnValite").click(function(){
-                var id = $(this).data("userv");
+            $(".btnValite").click(function(){                
+                bootbox.confirm({
+                    title:'Confirmar',
+                    message: "¿Esta seguro de actualizar los dato?",
+                    buttons: {
+                        confirm: {
+                            label: 'Si',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        console.log('This was logged in the callback: ' + result);
+                    }
+                });
+                
+                /*var id = $(this).data("userv");
                 var user = $("#agente").val();
                 $.post('http://192.168.1.112/gps-sql/ajax/post-update-status.php', {id:id,user:user}, function(data){
                     if(data == '1'){
@@ -47,7 +65,8 @@ if(!empty($stringTable)){//$resultDNI
                     }else{
                         alert("No se ha confirmado la peticion.");
                     }
-                });
+                });*/
+        
             });
         });
     </script>

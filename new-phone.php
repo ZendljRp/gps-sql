@@ -15,6 +15,7 @@
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
         <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/bootbox/bootbox.js"></script>
         <style type="text/css">
             /* Center the loader */
             .loader {
@@ -163,7 +164,7 @@
                 </div>
             </div>
             <br/>
-            <!-- Modal -->
+            <!-- Modal Guardado-->
             <div id="myModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -182,6 +183,7 @@
                 </div>
             </div>
             
+            <!-- Modal Agregar-->
             <div id="myModalAdd" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -201,6 +203,7 @@
                 </div>
             </div>
             
+            <!-- Modal Advertencia-->
             <div id="myWarring" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -211,6 +214,25 @@
                         </div>
                         <div class="modal-body">
                             <p>El número telefónico, ya existe.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Confirmar-->
+            <div id="myWarring" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Esta seguro de actualizar los dato?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
