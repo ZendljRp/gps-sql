@@ -14,20 +14,6 @@ $strData ="";
                         order by datfechagestion desc "; 
 
 
-    $rsql = sqlsrv_query($conn,$sql);
-    $row = count($rsql);
-    if ($row > 0) {
-        echo "";
-    }else{
-        $sqlinsert = "INSERT INTO gpsgestiones VALUES('20170907 00:00:00.000','{$DNI}','$fechagestion','$Numerotelefonico','','T','$Estado','$Observacion','DIRCON','$Agente','','MANUAL','','','MASTER','$idCliente');";
-            $result = sqlsrv_query($conn,$sqlinsert);
-            if (sqlsrv_errors()) {
-                echo "Conexion no se pudo establecer.<br/>";
-                die(print_r(sqlsrv_errors(),true));
-            }else{
-                echo "ok";
-            }
-    }
 
     $stmt = sqlsrv_query($conn, $sql);
     if( $stmt === false ) {
@@ -58,7 +44,7 @@ $strData ="";
             //Codigo necesario para terminar la ejecución con gracia
             }
         }
-        $strestado = "<select name='descripcion'><option value=''>seleccione Estado</option>";
+        $strestado = "<select name='descripcion' class='Estado'><option value=''>seleccione Estado</option>";
           while( $rowEstado = sqlsrv_fetch_object($stmtEstado) ) {
                 $selectestado = ($rowEstado->descripcion == $descripcion)?"selected":"";      
                 $strestado .="<option value='".$rowEstado->descripcion."' $selectestado>".$rowEstado->descripcion."</option>";
@@ -83,7 +69,7 @@ $strData ="";
             //Codigo necesario para terminar la ejecución con gracia
             }
         }
-        $strcliente = "<select name='cliente'><option value=''>seleccione cliente</option>";
+        $strcliente = "<select name='cliente' class='Cliente'><option value=''>seleccione cliente</option>";
           while( $rowCliente = sqlsrv_fetch_object($stmtcliente) ) {
                 $selectcliente = ($rowCliente->idcliente == $idcliente)?"selected":"";      
                 $strcliente .="<option value='".$rowCliente->idcliente."' $selectcliente>".$rowCliente->nombre."</option>";
@@ -96,19 +82,19 @@ $strData ="";
     $i =1;
     //$result = sqlsrv_execute($stmt);
     while( $row = sqlsrv_fetch_object($stmt) ) { 
-      $strData .= "<tr>
-                <td>".$i."</td>
-                <td>".getcliente($row->Cliente)."</td>
-                <td style='text-align:center;'><input type='text' name='fechagestion' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
-                <td>".$row->Numerotelefonico."</td>
-                <td><input type='text' class='text Dni' name='Dni' value='".$row->DNI."'/></td>
-                <td>".getEstado($row->Estado)."</td>
-                <td>".$row->Observacion."</td>
-                <td>".$row->Agente."</td>
-                <td style='text-align:center;'><input class='chckSelec checkedsi' type='checkbox' name='chckSelec' data-idgagestion='".$row->id."'/></td>
-            </tr>";
-        $i++;
-    }
+      $strData .= "<tr id='".$row->id."'>
+                        <td>".$i."</td>
+                        <td>".getcliente($row->Cliente)."</td>
+                        <td style='text-align:center;'><input type='text' name='Fechagestion' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
+                        <td>".$row->Numerotelefonico."</td>
+                        <td><input type='text' class='text Dni' name='Dni' value='".$row->DNI."'/></td>
+                        <td>".getEstado($row->Estado)."</td>
+                        <td><textarea type='text' class='Observacion'>".$row->Observacion."</textarea></td>
+                        <td><input type='text' class='Agente' value='".$row->Agente."'/></td>
+                        <td style='text-align:center;'><input class='chckSelec checkedsi' type='checkbox' name='chckSelec' data-idgagestion='".$row->id."'/></td>
+                    </tr>";
+                $i++;
+            }
 
 if (!empty($_POST["btnAgregar"])) {
     $conn = conn();
@@ -140,18 +126,26 @@ if (!empty($_POST["btnAgregar"])) {
         
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css"  />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css"  />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/alertify.min.css" />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/themes/default.min.css" />
-        <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
+        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
+        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/dataTables.css"  />
+        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/DataTables/css/dataTables.bootstrap.css"  />
+        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/alertify.min.css" />
+        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/themes/default.min.css" />
+        <link href="http://localhost/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
+        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/dataTables.bootstrap.css">
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-        
-        
-        
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="http://localhost/gps-sql/assets/js/jquery.2.2.4.js" crossorigin="anonymous"></script>
+        <script src="http://localhost/gps-sql/assets/css/bootstrap/js/bootstrap.js" crossorigin="anonymous"></script>         
+        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/jquery.dataTables.js"></script>
+        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/dataTables.bootstrap.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
+        <script src="http://localhost/gps-sql/assets/alertafy/alertify.min.js"></script>
+        <script src="http://localhost/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://localhost/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>    
     </head>
     <head>
         <style type="text/css">
@@ -289,27 +283,18 @@ if (!empty($_POST["btnAgregar"])) {
                         </tbody>
                     </table>
                         <ul class = "pagination">
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">1</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">2</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">3</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">4</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">5</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">1</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">2</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">3</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">4</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">5</a></li>
+                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
                         </ul>
                 </div>        
             </div>
         </div> 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
-        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/alertafy/alertify.min.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-        <script type="text/javascript">
+        <script type="text/JavaScript">
             function validar(){
                     var micampo = document.getElementById("strInput").value;
                     if (micampo.length== 0|| /^\s+$/.test(micampo)) {
@@ -352,8 +337,7 @@ if (!empty($_POST["btnAgregar"])) {
                         $("input.chckSelec").each(function(){ if ($(this).data("checked")==0) $(this).removeAttr("checked"); });
                         }
                     });
-
-                     $('.date').datepicker({
+                    $('.date').datepicker({
                         language: "es",
                         autoclose: true,
                         todayHighlight: true
@@ -362,7 +346,7 @@ if (!empty($_POST["btnAgregar"])) {
                     $('.Guardar').click(function(){
                         var alldata = $("#tableTelefono").serialize();
                         alert(alldata);
-                        $.post('http://192.168.1.112/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
+                        $.post('http://localhost/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
                             console.log(response); 
                             $("#resultData").attr(response);
                             });
@@ -407,25 +391,35 @@ if (!empty($_POST["btnAgregar"])) {
                     });
 
                      $('#btnAgregar').click(function(){
+                        $('.checkedsi:checkbox:checked').each(function(){
                             var checkedcliente= $('.checkedsi').is(":checked");
-                            $(this).each(function(){
-                                if (checkedcliente==true) {
-                                var cliente=$('.Cliente').val();
-                                var Fechagestion=$('.fechagestion').val();
-                                var Telefono=$('.telefono').val();
+                            var countn = $('.checkedsi:checkbox:checked').size();
+                            console.log($('.checkedsi:checkbox:checked')[0]);
+
+
+                           if (checkedcliente==true) {
+                                var Cliente=$('.Cliente').val();
+                                var date=$('.date').val();
+                                //var Numerotelefonico=$('.Numerotelefonico').val();
                                 var Dni=$('.Dni').val(); 
-                                var estado=$('.Estado').val();
-                                var observacion=$('.Observacion').val();
-                                var agente=$('.Agente').val();
+                                var Estado=$('.Estado').val();
+                                var Observacion=$('.Observacion').val();
+                                var Agente=$('.Agente').val();
                             }
                             alert(Dni);
-                            alert(Telefono);
-                            alert(Fechagestion);
-                            alert(cliente);
-                            alert(estado);
-                            alert(observacion);
-                            alert(agente);
-                            });
+                            //alert(Numerotelefonico);
+                            alert(date);
+                            alert(Cliente);
+                            alert(Estado);
+                            alert(Observacion);
+                            alert(Agente); 
+                        })
+
+
+                           /* var checkedcliente= $('.checkedsi').is(":checked");
+                            $(this).each(function(){
+                                
+                            });*/
                             
                     });
 
