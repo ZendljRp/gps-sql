@@ -96,8 +96,7 @@
                 </thead>
                 <tbody style="font-size: 11px;">                    
                 </tbody>                
-            </table>  
-            <div id="resultData">                
+            </table>               
             </div>
         </div>
         
@@ -136,6 +135,25 @@
                                     { "data": "agente" },
                                     { "data": "tiempollamada" }
                             ],
+                            "language":{
+                                "emptyTable":     "No hay datos disponibles en la tabla",
+                                "info":           "Mostrando _START_ al _END_ de _TOTAL_ entradas",
+                                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                                "infoPostFix":    "",
+                                "thousands":      ",",
+                                "lengthMenu":     "Mostrar _MENU_ entradas",
+                                "loadingRecords": "Cargando...",
+                                "processing":     "Procesando...",
+                                "search":         "Buscar:",
+                                "zeroRecords":    "No se encontraron coincidencia en los registros",
+                                "paginate": {
+                                    "first":      "Primero",
+                                    "last":       "Último",
+                                    "next":       "Siguiente",
+                                    "previous":   "Anterior"
+                                }
+                            },
                             fixedHeader: {
                                 header: true
                             },

@@ -4,16 +4,14 @@ set_time_limit (180);
 $conn = conn();
 $strData ="";
  $sql = "SELECT TOP 10 idGagestion As id, idCliente AS Cliente,datfechagestion AS fechagestion,
-                       varNumerotelefonico  AS Numerotelefonico,
-                       varrut AS DNI, varcodigorespuesta AS Estado, varobservaciones AS Observacion,
-                       varagente AS Agente 
-                       FROM ga_gestiones 
-                       where varrut is null
-                        or varcodigorespuesta is null
-                        or idCliente is null
-                        order by datfechagestion desc "; 
-
-
+        varNumerotelefonico  AS Numerotelefonico,
+        varrut AS DNI, varcodigorespuesta AS Estado, varobservaciones AS Observacion,
+        varagente AS Agente 
+        FROM ga_gestiones 
+        where varrut is null
+         or varcodigorespuesta is null
+         or idCliente is null
+         order by datfechagestion desc "; 
 
     $stmt = sqlsrv_query($conn, $sql);
     if( $stmt === false ) {
@@ -27,7 +25,8 @@ $strData ="";
         //Codigo necesario para terminar la ejecución con gracia
         }
     }
-    function getEstado($descripcion)
+    
+    function getEstado($descripcion, $idrow)
     {
         $conn = conn();
         $sqlestado =" SELECT  varDesautodial As descripcion , varCodautodial As Codigo
@@ -44,7 +43,7 @@ $strData ="";
             //Codigo necesario para terminar la ejecución con gracia
             }
         }
-        $strestado = "<select name='descripcion' class='Estado'><option value=''>seleccione Estado</option>";
+        $strestado = "<select name='descripcion".$idrow."' class='Estado'><option value=''>seleccione Estado</option>";
           while( $rowEstado = sqlsrv_fetch_object($stmtEstado) ) {
                 $selectestado = ($rowEstado->descripcion == $descripcion)?"selected":"";      
                 $strestado .="<option value='".$rowEstado->descripcion."' $selectestado>".$rowEstado->descripcion."</option>";
@@ -53,7 +52,7 @@ $strData ="";
             return $strestado;
     }
 
-    function getcliente($idcliente)
+    function getcliente($idcliente, $idrow)
     {
         $conn = conn();
         $sqlcliente ="SELECT idCliente As idcliente,varNombre AS nombre from clientes where idCliente<>3";
@@ -69,7 +68,7 @@ $strData ="";
             //Codigo necesario para terminar la ejecución con gracia
             }
         }
-        $strcliente = "<select name='cliente' class='Cliente'><option value=''>seleccione cliente</option>";
+        $strcliente = "<select name='cliente".$idrow."' class='Cliente'><option value=''>seleccione cliente</option>";
           while( $rowCliente = sqlsrv_fetch_object($stmtcliente) ) {
                 $selectcliente = ($rowCliente->idcliente == $idcliente)?"selected":"";      
                 $strcliente .="<option value='".$rowCliente->idcliente."' $selectcliente>".$rowCliente->nombre."</option>";
@@ -82,15 +81,15 @@ $strData ="";
     $i =1;
     //$result = sqlsrv_execute($stmt);
     while( $row = sqlsrv_fetch_object($stmt) ) { 
-      $strData .= "<tr id='".$row->id."'>
+      $strData .= "<tr>
                         <td>".$i."</td>
-                        <td>".getcliente($row->Cliente)."</td>
-                        <td style='text-align:center;'><input type='text' name='Fechagestion' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
+                        <td>".getcliente($row->Cliente, $row->id)."</td>
+                        <td style='text-align:center;'><input type='text' name='Fechagestion".$row->id."' class='form-control date' placeholder='fechagestion' value=".$row->fechagestion->format('d/m/Y')."></input></td>
                         <td>".$row->Numerotelefonico."</td>
-                        <td><input type='text' class='text Dni' name='Dni' value='".$row->DNI."'/></td>
-                        <td>".getEstado($row->Estado)."</td>
-                        <td><textarea type='text' class='Observacion'>".$row->Observacion."</textarea></td>
-                        <td><input type='text' class='Agente' value='".$row->Agente."'/></td>
+                        <td><input type='text' class='text Dni' name='Dni".$row->id."' value='".$row->DNI."'/></td>
+                        <td>".getEstado($row->Estado, $row->id)."</td>
+                        <td><textarea type='text' name='Observacion".$row->id."' class='Observacion' >".$row->Observacion."</textarea></td>
+                        <td><input type='text' name='Agente".$row->id."' class='Agente' value='".$row->Agente."'/></td>
                         <td style='text-align:center;'><input class='chckSelec checkedsi' type='checkbox' name='chckSelec' data-idgagestion='".$row->id."'/></td>
                     </tr>";
                 $i++;
@@ -126,26 +125,18 @@ if (!empty($_POST["btnAgregar"])) {
         
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/dataTables.css"  />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/datatables/DataTables/css/dataTables.bootstrap.css"  />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/alertify.min.css" />
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/alertafy/css/themes/default.min.css" />
-        <link href="http://localhost/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
-        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/jquery.dataTables.css">
-        <link rel="stylesheet" type="text/css" href="http://localhost/gps-sql/assets/dataTables/DataTables/css/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css"  />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css"  />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/alertify.min.css" />
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/themes/default.min.css" />
+        <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="http://localhost/gps-sql/assets/js/jquery.2.2.4.js" crossorigin="anonymous"></script>
-        <script src="http://localhost/gps-sql/assets/css/bootstrap/js/bootstrap.js" crossorigin="anonymous"></script>         
-        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/jquery.dataTables.js"></script>
-        <script src="http://localhost/gps-sql/assets/dataTables/DataTables/js/dataTables.bootstrap.js"></script>
-        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
-        <script src="http://localhost/gps-sql/assets/alertafy/alertify.min.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>    
+        
+        
+        
     </head>
     <head>
         <style type="text/css">
@@ -259,7 +250,7 @@ if (!empty($_POST["btnAgregar"])) {
                     <form class="form-inline"  onsubmit="return validar()" id="formatBusquedaTelefono" name="formBusquedaTelefono" method="POST" action="BusquedaTelefono.php" >
                          
                         <br>
-                        <input type="button" id="btnAgregar" name="btnAgregar" value="Agregar" class="btn btn-default"/>
+                        <input type="button" id="btnAgregar" name="btnAgregar" value="ACTUALIZAR" class="btn btn-default"/>
                     </form>
                 </div>
             </div>
@@ -283,31 +274,40 @@ if (!empty($_POST["btnAgregar"])) {
                         </tbody>
                     </table>
                         <ul class = "pagination">
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">1</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">2</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">3</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">4</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">5</a></li>
-                           <li><a href = "http://localhost/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">1</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">2</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">3</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">4</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">5</a></li>
+                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
                         </ul>
                 </div>        
             </div>
         </div> 
-        <script type="text/JavaScript">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/alertafy/alertify.min.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script type="text/javascript">
             function validar(){
-                    var micampo = document.getElementById("strInput").value;
-                    if (micampo.length== 0|| /^\s+$/.test(micampo)) {
-                        alert('Los campos de textos estan vacio');
-                        return false;
-                    }
-                    var miCombo = document.getElementById("slctAgency").value;
-                        if(miCombo == ""){     
-                        alert('Debe Elegir una opcion en el combo!');
-                        return false;
-                        }
-                return true;
+                var micampo = document.getElementById("strInput").value;
+                if (micampo.length== 0|| /^\s+$/.test(micampo)) {
+                    alert('Los campos de textos estan vacio');
+                    return false;
                 }
+                var miCombo = document.getElementById("slctAgency").value;
+                    if(miCombo == ""){     
+                    alert('Debe Elegir una opcion en el combo!');
+                    return false;
+                }
+                return true;
+            }
 
             function changeCheckedOn(){
                 $('.checkedsi').prop('checked',true);
@@ -326,9 +326,8 @@ if (!empty($_POST["btnAgregar"])) {
             /// End de chckselec
             ///datapicker
             $(document).ready(function(){
-                    $(".checkseleccione").bind("click",function()
-                        {
-                         if ($(this).attr("checked")==true)
+                $(".checkseleccione").bind("click",function(){
+                    if ($(this).attr("checked")==true)
                         {
                          $("input.chckSelec").each(function(){ $(this).attr("checked",true); });
                         }
@@ -337,22 +336,22 @@ if (!empty($_POST["btnAgregar"])) {
                         $("input.chckSelec").each(function(){ if ($(this).data("checked")==0) $(this).removeAttr("checked"); });
                         }
                     });
-                    $('.date').datepicker({
+                $('.date').datepicker({
                         language: "es",
                         autoclose: true,
                         todayHighlight: true
                     });
                     ////
-                    $('.Guardar').click(function(){
+                $('.Guardar').click(function(){
                         var alldata = $("#tableTelefono").serialize();
                         alert(alldata);
-                        $.post('http://localhost/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
+                        $.post('http://192.168.1.112/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
                             console.log(response); 
                             $("#resultData").attr(response);
                             });
                     });
                     ///
-                     $(document).on('submit', '#tableTelefono', function() { 
+                $(document).on('submit', '#tableTelefono', function() { 
                     //obtenemos datos.
                         var data = $(this).serialize();  
                         $.ajax({  
@@ -371,7 +370,7 @@ if (!empty($_POST["btnAgregar"])) {
                     return false;
                     });
            
-                    $('.Agregar').on('click',function(){
+                $('.Agregar').on('click',function(){
                         var confirm= alertify.confirm('Desea Agregar','Agregar solicitud?',null,null).set('labels', {ok:'Agregar', cancel:'Cancelar'});  
                                 confirm.set({transition:'slide'});      
                                     confirm.set('onok', function(){ //callbak al pulsar botón positivo
@@ -382,21 +381,41 @@ if (!empty($_POST["btnAgregar"])) {
                         });
                     });
 
-                    $('#checkedsi').click(function(){
-                        if ($(this).is(":checked")==true) {
-                            changeCheckedOn();                            
-                        }else{
-                            changeCheckedOff();                            
-                        }
-                    });
+                $('#checkedsi').click(function(){
+                    if ($(this).is(":checked")==true) {
+                        changeCheckedOn();                            
+                    }else{
+                        changeCheckedOff();                            
+                    }
+                });
 
-                     $('#btnAgregar').click(function(){
-                        $('.checkedsi:checkbox:checked').each(function(){
+                $('#btnAgregar').click(function(){
+                    var countcheck = $('.checkedsi:checkbox:checked').size();
+                    if(countcheck > 0){
+                        $('.checkedsi:checkbox:checked').map(function(){
+                            var dataid = $(this).data('idgagestion');                            
+                            var Cliente=$('select[name=cliente'+dataid+']').val();
+                            var date=$('input[name=Fechagestion'+dataid+']').val();
+                            //var Numerotelefonico=$('.Numerotelefonico').val();
+                            var Dni=$('input[name=Dni'+dataid+']').val(); 
+                            var Estado=$('select[name=descripcion'+dataid+']').val();
+                            var Observacion=$('textarea[name=Observacion'+dataid+']').val();
+                            var Agente=$('input[name=Agente'+dataid+']').val();
+                            console.log(dataid + " " + Cliente + " " + date + " " + Dni + " " + Estado + " " + Observacion + " " + Agente);
+                        });
+                        /*for(var i = 0; i<countcheck; i++){
+                            var idcheck = $('.checkedsi:checkbox:checked')[i].data('idgagestion') ;
+                            //var oll = idcheck.data('idgagestion');
+                            console.log(idcheck);
+                        }*/
+                    }
+
+                    console.log(countcheck);
+                        /*$('.checkedsi:checkbox:checked').each(function(){
                             var checkedcliente= $('.checkedsi').is(":checked");
-                            var countn = $('.checkedsi:checkbox:checked').size();
-                            console.log($('.checkedsi:checkbox:checked')[0]);
-
-
+                            var countn = ($('.checkedsi:checkbox:checked')[counter]).data("idgagestion");
+                            console.log(countn);
+                            
                            if (checkedcliente==true) {
                                 var Cliente=$('.Cliente').val();
                                 var date=$('.date').val();
@@ -406,14 +425,15 @@ if (!empty($_POST["btnAgregar"])) {
                                 var Observacion=$('.Observacion').val();
                                 var Agente=$('.Agente').val();
                             }
+                            counter++;
                             alert(Dni);
                             //alert(Numerotelefonico);
                             alert(date);
                             alert(Cliente);
                             alert(Estado);
                             alert(Observacion);
-                            alert(Agente); 
-                        })
+                            alert(Agente); */
+                    });
 
 
                            /* var checkedcliente= $('.checkedsi').is(":checked");
@@ -421,7 +441,7 @@ if (!empty($_POST["btnAgregar"])) {
                                 
                             });*/
                             
-                    });
+            });
 
 
 
@@ -450,7 +470,7 @@ if (!empty($_POST["btnAgregar"])) {
                                     },
                                     "bDestroy": true
                                 });*/
-             });
+             //});
 
            
             ///

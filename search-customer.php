@@ -7,16 +7,16 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
     $conn = conn();
     $strData = "";
     $addSQL  = "";
-    $strResp = "";
+    $strResp = '{"data":[';
     $predni  = $_REQUEST["strInput"];
     $dni = str_replace("'", "", $predni);
     $agency = $_POST["slctAgency"];
     if(!empty($agency)){
-        $addSQL = " AND varOperador = 'DIRCON'";
-        //$addSQL = " AND varOperador = '" . $agency . "'";
+        $addSQL  = " AND varOperador = 'DIRCON'";
+        $addSQL .= " AND idCliente = $agency";
     }else{
-        $addSQL = " AND varOperador = 'DIRCON'";
-        //$addSQL = "";
+        $addSQL  = " AND varOperador = 'DIRCON'";
+        $addSQL .= " AND idCliente = 1";
     }    
     $sql = "SELECT varCodprodinterno AS codproint, 
                     varCodprodcliente AS codproclie, 
@@ -26,7 +26,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                     decImportesalfooperativo AS decimportsaldoper, 
                     decUltsaldoactinv AS decultsaldact
             FROM gpscartera
-            WHERE varDocumento LIKE '%{$dni}%';"; 
+            WHERE varDocumento LIKE '%{$dni}%'"; 
     $stmt = sqlsrv_query($conn, $sql);
     if( $stmt === false ) {
         $hay= 0;
@@ -64,16 +64,22 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
     $j =1;
     //$result = sqlsrv_execute($stmt);
     while( $row = sqlsrv_fetch_object($stmtdata) ) {
-        $strResp .= "<tr>
-                        <td style='text-align:center;'>$j</td>
-                        <td>".utf8_encode(utf8_decode($row->varNombreors))."</td>
-                        <td style='text-align:center;'>".$row->datFechagestion->format('d/m/Y')."</td>
-                        <td style='text-align:center;'>".$row->varNumerotelefonico."</td>
-                        <td>". strtoupper($row->estadoDesc)."</td>
-                        <td>".utf8_encode(utf8_decode($row->varObservaciones))."</td>
-                    </tr>";
+        $strResp .= '{"item":"'.$j.'",'
+                .'"nombre":"'.utf8_encode(utf8_decode($row->varNombreors)).'",'
+                .'"fecha":"'.$row->datFechagestion->format('d/m/Y').'",'
+                .'"telefono":"'.$row->varNumerotelefonico.'",'
+                .'"estado":"'. strtoupper($row->estadoDesc).'",'
+                .'"observacion":"'.utf8_encode(utf8_decode($row->varObservaciones)).'"},';
         $j++;
     }
+    
+    $strRespa = substr($strResp, 0, -1);
+    $strRespa .= "]}"; 
+    $fichero = 'search-customer.txt';
+    $myfile = fopen("F:/xampp/htdocs/gps-sql/assets/file/report/$fichero", "wb") or die("Unable to open file!");
+    $txt = $strRespa; 
+    fwrite($myfile, $txt);    
+    fclose($myfile);
     
 }
 ?>
@@ -85,15 +91,18 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
-        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
-        
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />        
+        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />        
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="http://192.168.1.112/gps-sql/assets/js/jquery2.2.4.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
+        <style type="text/css">        
+            table.fixedHeader-floating{position:fixed !important;background-color:white;top: -7px !important;}
+            table.fixedHeader-floating.no-footer{border-bottom-width:0}
+            table.fixedHeader-locked{position:absolute !important;background-color:white}
+            @media print{table.fixedHeader-floating{display:none}}
+        </style>
     </head>
     <body>
         <div class="container">
@@ -114,8 +123,9 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                                     <label for="slctAgency">AGENCIA:</label>
                                     <select name="slctAgency" id="slctAgency" class="form-control">
                                         <option value="">Seleccione agencia</option>
-                                        <option value="DIRCON">DIRCON PERÚ</option>
-                                        <!--option value="GPS">GPS PERÚ</option-->               
+                                        <option value="1">GPS PERÚ</option>
+                                        <option value="2">CONECTA PERÚ</option>
+                                        <option value="4">FRENO S.A. PERÚ</option> 
                                     </select>
                                 </div>  
                             </div>
@@ -146,7 +156,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                         </tbody>
                     </table>
 
-                    <table class="table table-responsive table-striped" border="0">
+                    <table id="searchCustomer" class="table table-responsive table-striped display" border="0">
                         <thead>
                             <tr>
                                 <th class="text-center" width="3%">Item</th>                            
@@ -158,15 +168,60 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>                            
-                                <?php echo !empty($strResp)?$strResp:"";?>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>            
             </div>
             <?php endif;?>
         </div> 
+        
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="http://192.168.1.112/gps-sql/assets/js/jquery2.2.4.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#searchCustomer').DataTable( {                            
+                    "ajax": "http://192.168.1.112/gps-sql/assets/file/report/search-customer.txt",
+                    "columns": [
+                        { "data": "item" },
+                        { "data": "nombre" },
+                        { "data": "fecha" },
+                        { "data": "telefono" },
+                        { "data": "estado" },
+                        { "data": "observacion" }
+                    ],
+                    "language":{
+                        "emptyTable":     "No hay datos disponibles en la tabla",
+                        "info":           "Mostrando _START_ al _END_ de _TOTAL_ entradas",
+                        "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                        "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Mostrar _MENU_ entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing":     "Procesando...",
+                        "search":         "Buscar:",
+                        "zeroRecords":    "No se encontraron coincidencia en los registros",
+                        "paginate": {
+                            "first":      "Primero",
+                            "last":       "Último",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        }
+                    },
+                    fixedHeader: {
+                        header: true
+                    },
+                    "bDestroy": true
+                });
+            });
+        </script>
+
         
     </body>
 </html>
