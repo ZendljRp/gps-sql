@@ -79,8 +79,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
     $myfile = fopen("F:/xampp/htdocs/gps-sql/assets/file/report/$fichero", "wb") or die("Unable to open file!");
     $txt = $strRespa; 
     fwrite($myfile, $txt);    
-    fclose($myfile);
-    
+    fclose($myfile);    
 }
 ?>
 <!doctype html>
@@ -94,8 +93,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />        
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />        
         <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
-
-        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
+        
         <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
         <style type="text/css">        
             table.fixedHeader-floating{position:fixed !important;background-color:white;top: -7px !important;}
@@ -150,9 +148,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <?php echo !empty($strData)?$strData:"";?>
-                            </tr>
+                            <?php echo !empty($strData)?$strData:"";?>
                         </tbody>
                     </table>
 
@@ -167,9 +163,7 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
                                 <th class="text-center" width="35%">OBSERVACIÓN</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>            
             </div>

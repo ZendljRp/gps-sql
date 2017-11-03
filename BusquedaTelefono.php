@@ -3,7 +3,7 @@ include 'conecction/conecction.php';
 set_time_limit (180);
 $conn = conn();
 $strData ="";
- $sql = "SELECT TOP 10 idGagestion As id, idCliente AS Cliente,datfechagestion AS fechagestion,
+ $sql = "SELECT top 20 idGagestion As id, idCliente AS Cliente,datfechagestion AS fechagestion,
         varNumerotelefonico  AS Numerotelefonico,
         varrut AS DNI, varcodigorespuesta AS Estado, varobservaciones AS Observacion,
         varagente AS Agente 
@@ -135,8 +135,6 @@ if (!empty($_POST["btnAgregar"])) {
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
         
-        
-        
     </head>
     <head>
         <style type="text/css">
@@ -246,45 +244,54 @@ if (!empty($_POST["btnAgregar"])) {
         <div class="container">
             <div class="content">
                 <div class="container-fluid">
-                     <h1 class="text-center">Mantenimiento de Busqueda por Cliente</h1>
-                    <form class="form-inline"  onsubmit="return validar()" id="formatBusquedaTelefono" name="formBusquedaTelefono" method="POST" action="BusquedaTelefono.php" >
-                         
+                    <h1 class="text-center">Mantenimiento de Busqueda por Cliente</h1>
+                    <form class="form-inline"  onsubmit="return validar()" id="formatBusquedaTelefono" name="formBusquedaTelefono" method="POST" action="BusquedaTelefono.php" >                         
                         <br>
-                        <input type="button" id="btnAgregar" name="btnAgregar" value="ACTUALIZAR" class="btn btn-default"/>
+                        <div style="float: right;">
+                            <input type="button" id="btnAgregar" name="btnAgregar" value="ACTUALIZAR" class="btn btn-success"/>
+                        </div>
+                        
                     </form>
                 </div>
             </div>
             <br/>
-            <div  class="container">
-                <div class="container" id="tableCliente">
-                    <table id="tableTelefono" class="table table-striped table-responsive display" border="1">
-                        <thead>
-                                <th class="text-center" bgcolor="#F9E79F">Item</th>
-                                <th class="text-center" bgcolor="#F9E79F">CLIENTE</th> 
-                                <th class="text-center" bgcolor="#F9E79F">FECHA. DE. GESTION</th> 
-                                <th class="text-center" bgcolor="#F9E79F">TELEFONO</th>  
-                                <th class="text-center" bgcolor="#F9E79F">DNI</th>
-                                <th class="text-center" bgcolor="#F9E79F">ESTADO</th>  
-                                <th class="text-center" bgcolor="#F9E79F">OBSERVACION</th>  
-                                <th class="text-center" bgcolor="#F9E79F">AGENTE</th>
-                                <th class="text-center" bgcolor="#F9E79F">SELECCIONAR <input id="checkedsi" class='chckSelec' type='checkbox' name='chckSelec' value="1" /></th>
-                        </thead>
-                        <tbody>
-                            <?php echo !empty($strData)?$strData:"";?>
-                        </tbody>
-                    </table>
-                        <ul class = "pagination">
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&laquo;</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">1</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">2</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">3</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">4</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">5</a></li>
-                           <li><a href = "http://192.168.1.112/gps-sql/BusquedaTelefono.php">&raquo;</a></li>
-                        </ul>
-                </div>        
-            </div>
         </div> 
+        <table id="tableTelefono" class="table table-striped table-responsive display" border="1">
+            <thead style="font-size: 12px; background-color: #F9E79F; font-weight: bold;">
+                    <th class="text-center">Item</th>
+                    <th class="text-center">CLIENTE</th> 
+                    <th class="text-center">FECHA. DE. GESTION</th> 
+                    <th class="text-center">TELEFONO</th>  
+                    <th class="text-center">DNI</th>
+                    <th class="text-center">ESTADO</th>  
+                    <th class="text-center">OBSERVACION</th>  
+                    <th class="text-center">AGENTE</th>
+                    <th class="text-center">SELECCIONAR <input id="checkedsi" class='chckSelec' type='checkbox' name='chckSelec' value="1" /></th>
+            </thead>
+            <tbody>
+                <?php echo !empty($strData)?$strData:"";?>
+            </tbody>
+        </table> 
+        
+        <!-- Modal -->
+        <div id="valiteChecked" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header alert alert-danger">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Advertencia</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Seleccione la casilla para poder actualizar.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
         <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
@@ -327,15 +334,12 @@ if (!empty($_POST["btnAgregar"])) {
             ///datapicker
             $(document).ready(function(){
                 $(".checkseleccione").bind("click",function(){
-                    if ($(this).attr("checked")==true)
-                        {
-                         $("input.chckSelec").each(function(){ $(this).attr("checked",true); });
-                        }
-                        else
-                        {
+                    if ($(this).attr("checked")==true){
+                        $("input.chckSelec").each(function(){ $(this).attr("checked",true); });
+                    }else{
                         $("input.chckSelec").each(function(){ if ($(this).data("checked")==0) $(this).removeAttr("checked"); });
-                        }
-                    });
+                    }
+                });
                 $('.date').datepicker({
                         language: "es",
                         autoclose: true,
@@ -348,7 +352,7 @@ if (!empty($_POST["btnAgregar"])) {
                         $.post('http://192.168.1.112/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
                             console.log(response); 
                             $("#resultData").attr(response);
-                            });
+                        });
                     });
                     ///
                 $(document).on('submit', '#tableTelefono', function() { 
@@ -408,6 +412,8 @@ if (!empty($_POST["btnAgregar"])) {
                             //var oll = idcheck.data('idgagestion');
                             console.log(idcheck);
                         }*/
+                    }else{
+                        $("#valiteChecked").modal('show');
                     }
 
                     console.log(countcheck);

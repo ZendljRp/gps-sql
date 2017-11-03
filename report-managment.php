@@ -157,6 +157,9 @@
                             fixedHeader: {
                                 header: true
                             },
+                            buttons: [
+                                'excel', 'pdf'
+                            ],
                             "bDestroy": true
                         }); 
                         //$("#resultData").html(response);
