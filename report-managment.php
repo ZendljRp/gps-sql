@@ -4,10 +4,11 @@
         <title>Reporte Administrativo</title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-        <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
-        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
+        <link href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="http://192.168.1.7:8080/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
         
         <style type="text/css"> 
         #packt {
@@ -100,14 +101,14 @@
             </div>
         </div>
         
-        <script src="http://192.168.1.112/gps-sql/assets/js/jquery.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/js/jquery.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/jquery-validation/localization/messages_es_PE.min.js"></script>
         <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
         
         <script type="text/javascript">
@@ -120,9 +121,9 @@
                 
                 $("#btnSearchReport").click(function(){
                     var alldata = $("#formSearchReport").serialize();
-                    $.post('http://192.168.1.112/gps-sql/ajax/post-report-managment.php', alldata, function(response){                        
+                    $.post('http://192.168.1.7:8080/gps-sql/ajax/post-report-managment.php', alldata, function(response){                        
                         $('#reportTabl').DataTable( {                            
-                            "ajax": "http://192.168.1.112/gps-sql/assets/file/report/report-managment.txt",
+                            "ajax": "http://192.168.1.7:8080/gps-sql/assets/file/report/report-managment.txt",
                             "columns": [
                                     { "data": "item" },
                                     { "data": "nombre" },
@@ -157,9 +158,6 @@
                             fixedHeader: {
                                 header: true
                             },
-                            buttons: [
-                                'excel', 'pdf'
-                            ],
                             "bDestroy": true
                         }); 
                         //$("#resultData").html(response);

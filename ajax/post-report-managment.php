@@ -13,6 +13,8 @@ if(!empty($_POST)){
     $operad = !empty($_POST["slctoperador"])?$_POST["slctoperador"]:NULL;
     $respon = !empty($_POST["optionsRadios"])?$_POST["optionsRadios"]:NULL;
     $client = !empty($_POST["slctcliente"])?$_POST["slctcliente"]:NULL;
+    
+    echo var_dump(array($fchFin, $fchIni, $operad, $respon, $client));
     $jsonString = '{"data":[';
     $fchInit = changeDate($fchIni);
     $fchEnd  = changeDate($fchFin);

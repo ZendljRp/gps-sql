@@ -4,13 +4,12 @@ header("Content-Type: text/html;charset=utf-8");
 include 'conecction/conecction.php';
 
 if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
-    $conn = conn();
+    $conn    = conn();
     $strData = "";
     $addSQL  = "";
-    $strResp = '{"data":[';
     $predni  = $_REQUEST["strInput"];
-    $dni = str_replace("'", "", $predni);
-    $agency = $_POST["slctAgency"];
+    $dni     = str_replace("'", "", $predni);
+    $agency  = $_POST["slctAgency"];
     if(!empty($agency)){
         $addSQL  = " AND varOperador = 'DIRCON'";
         $addSQL .= " AND idCliente = $agency";
@@ -57,28 +56,26 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         INNER JOIN gpspersonas per
         ON per.varDocumento = ges.varRut
         WHERE varRut LIKE '%{$dni}%'$addSQL 
-        ORDER BY ges.datFechagestion DESC;";
-    
+        ORDER BY ges.datFechagestion DESC;";    
     $stmtdata = sqlsrv_query($conn, $sqlData);
-    
+	$arrayPrint["data"] = array();
     $j =1;
     //$result = sqlsrv_execute($stmt);
     while( $row = sqlsrv_fetch_object($stmtdata) ) {
-        $strResp .= '{"item":"'.$j.'",'
-                .'"nombre":"'.utf8_encode(utf8_decode($row->varNombreors)).'",'
-                .'"fecha":"'.$row->datFechagestion->format('d/m/Y').'",'
-                .'"telefono":"'.$row->varNumerotelefonico.'",'
-                .'"estado":"'. strtoupper($row->estadoDesc).'",'
-                .'"observacion":"'.utf8_encode(utf8_decode($row->varObservaciones)).'"},';
+		array_push($arrayPrint["data"], array(
+			"item" 			=> $j,
+			"nombre" 		=> utf8_encode(utf8_decode($row->varNombreors)),
+			"fecha" 		=> $row->datFechagestion->format('d/m/Y'),
+			"telefono" 		=> $row->varNumerotelefonico,
+			"estado" 		=> strtoupper($row->estadoDesc),
+			"observacion" 	=> utf8_encode(utf8_decode($row->varObservaciones))
+		));
         $j++;
-    }
-    
-    $strRespa = substr($strResp, 0, -1);
-    $strRespa .= "]}"; 
+    }	
     $fichero = 'search-customer.txt';
     $myfile = fopen("F:/xampp/htdocs/gps-sql/assets/file/report/$fichero", "wb") or die("Unable to open file!");
-    $txt = $strRespa; 
-    fwrite($myfile, $txt);    
+	$newtext = json_encode($arrayPrint);
+    fwrite($myfile, $newtext);    
     fclose($myfile);    
 }
 ?>
@@ -90,11 +87,11 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />        
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />        
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
         
-        <link rel="stylesheet" type="text/css" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css">
         <style type="text/css">        
             table.fixedHeader-floating{position:fixed !important;background-color:white;top: -7px !important;}
             table.fixedHeader-floating.no-footer{border-bottom-width:0}
@@ -171,16 +168,16 @@ if(!empty($_POST["btnSearchCustomer"]) OR !empty($_GET["strInput"])){
         </div> 
         
         <!-- Latest compiled and minified JavaScript -->
-        <script src="http://192.168.1.112/gps-sql/assets/js/jquery2.2.4.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/js/jquery2.2.4.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
         <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#searchCustomer').DataTable( {                            
-                    "ajax": "http://192.168.1.112/gps-sql/assets/file/report/search-customer.txt",
+                    "ajax": "http://192.168.1.7:8080/gps-sql/assets/file/report/search-customer.txt",
                     "columns": [
                         { "data": "item" },
                         { "data": "nombre" },

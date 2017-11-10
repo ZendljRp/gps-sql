@@ -6,15 +6,15 @@
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
         
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
     </head>
     <body>
         <div class="container">
@@ -69,7 +69,7 @@
             $(document).ready(function(){
                 $("#btnBuscar").on("click",function(){
                 var alldata = $("#searchPhone").serialize();
-                $.post('http://localhost/gps-sql/ajax/post-search-phone.php', alldata, function(data){
+                $.post('http://192.168.1.7:8080/gps-sql/ajax/post-search-phone.php', alldata, function(data){
                             //console.log(data);
                             if(data != "0"){
 //                                $("#strNombre").val(data).attr('disabled', true);
@@ -87,7 +87,7 @@
                     var typeDoc = $("#strDoc").val();                    
                     if(numdoc.length >= 8 && typeDoc != ""){
                         console.log(numdoc + " " + typeDoc);
-                        $.post('http://localhost/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
+                        $.post('http://192.168.1.7:8080/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
                             //console.log(data);
                             if(data != "0"){
 //                                $("#strNombre").val(data).attr('disabled', true);
@@ -128,7 +128,7 @@
                     var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator;
                     //var datos = $("#addNewPhone").serialize();
                     console.log(datos);
-                    $.post('http://localhost/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
+                    $.post('http://192.168.1.7:8080/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
                         if(response == "1"){
                             alert("Se agrego correctamente el telefono, a la persona en cuestion.");
                             $("#strNombre").val("").attr('disabled', false);

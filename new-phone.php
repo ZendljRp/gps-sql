@@ -6,16 +6,16 @@
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css" />
-        <link href="http://192.168.1.112/gps-sql/assets/css/bootstrap/fonts/glyphicons-halflings-regular.woff" />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css" />
+        <link href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/fonts/glyphicons-halflings-regular.woff" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/jquery-validation/localization/messages_es_PE.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/bootbox/bootbox.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/jquery-validation/jquery.validate.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/jquery-validation/localization/messages_es_PE.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/bootbox/bootbox.js"></script>
         <style type="text/css">
             /* Center the loader */
             .loader {
@@ -248,7 +248,7 @@
                     var typeDoc = $("#strDoc").val();                    
                     if(numdoc.length >= 8 && typeDoc != ""){
                         $(".loader").css('display', 'block');
-                        $.post('http://192.168.1.112/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
+                        $.post('http://192.168.1.7:8080/gps-sql/ajax/post-numphone.php', {doc:numdoc, typ:typeDoc}, function(data){
                             if(data != "0"){
                                 $(".loader").css('display', 'none');
                                 $("#tbTelfOper").html(data);
@@ -290,7 +290,7 @@
                         var agente   = $("#agente").val();
                         var slctOperator = $("#slctAgency option:selected").val();
                         var datos = "strDoc="+strDoc+"&intNumdoc="+intNumdoc+"&strNombre="+strNombre+"&strTelf="+strTelf+"&slctOperator="+slctOperator+"&agente="+agente;
-                        $.post('http://192.168.1.112/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
+                        $.post('http://192.168.1.7:8080/gps-sql/ajax/insert-new-phone.php', {fulldata:datos}, function(response){
                             if(response == "ok"){
                                 $("#myModal").modal();
                                 $("#strDoc").val('');

@@ -7,11 +7,11 @@
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
         
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://localhost/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />
         <!-- Latest compiled and minified JavaScript -->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
@@ -73,9 +73,9 @@
             </div>           
         </form>
                <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-        <script src="http://localhost/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://localhost/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
         <script type="text/javascript"></script>
                 <script type="text/javascript">
             $(document).ready(function(){
@@ -88,7 +88,7 @@
                 $("#btnGrabar").click(function(){
                     var alldata = $("#formSearchReport").serialize();
                     alert(alldata);
-                    $.post('http://localhost/gps-sql/ajax/post-Search-Client.php', alldata, function(response){
+                    $.post('http://192.168.1.7:8080/gps-sql/ajax/post-Search-Client.php', alldata, function(response){
                         console.log(response); 
                         $("#resultData").attr(response);
                     });

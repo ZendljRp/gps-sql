@@ -25,7 +25,6 @@ if(!empty($_POST)){
         $search = "SELECT TOP 100 * FROM datafonos WHERE varTelf LIKE '%".$values['strTelf']."%'";
     }
     
-    
     $rssearch = sqlsrv_query($conn, $search);
     while( $row = sqlsrv_fetch_array($rssearch, SQLSRV_FETCH_ASSOC) ) {
         $rows[] = $row["varTelf"];
@@ -44,5 +43,3 @@ if(!empty($_POST)){
         } 
     }    
 }
-
-

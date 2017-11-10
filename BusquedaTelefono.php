@@ -3,7 +3,7 @@ include 'conecction/conecction.php';
 set_time_limit (180);
 $conn = conn();
 $strData ="";
- $sql = "SELECT top 20 idGagestion As id, idCliente AS Cliente,datfechagestion AS fechagestion,
+ $sql = "SELECT idGagestion As id, idCliente AS Cliente,datfechagestion AS fechagestion,
         varNumerotelefonico  AS Numerotelefonico,
         varrut AS DNI, varcodigorespuesta AS Estado, varobservaciones AS Observacion,
         varagente AS Agente 
@@ -121,16 +121,16 @@ if (!empty($_POST["btnAgregar"])) {
         <title> Agent web client </title>
         <link rel='shortcut icon' href='assets/images/favicon.ico' />
         <!-- Optional theme -->
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap-theme.css" />
         
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.min.css"  />
         
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/jquery.dataTables.css"  />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css"  />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/alertify.min.css" />
-        <link rel="stylesheet" href="http://192.168.1.112/gps-sql/assets/alertafy/css/themes/default.min.css" />
-        <link href="http://192.168.1.112/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/css/bootstrap.css.map"  />        
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/css/jquery.dataTables.css"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/css/dataTables.bootstrap.css"  />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/alertafy/css/alertify.min.css" />
+        <link rel="stylesheet" href="http://192.168.1.7:8080/gps-sql/assets/alertafy/css/themes/default.min.css" />
+        <link href="http://192.168.1.7:8080/gps-sql/assets/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen" />
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
@@ -294,13 +294,13 @@ if (!empty($_POST["btnAgregar"])) {
         
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/css/bootstrap/js/bootstrap.js"></script>         
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/jquery.dataTables.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/DataTables/media/js/dataTables.bootstrap.js"></script>
         <script src="https://cdn.datatables.net/fixedheader/3.1.3/js/dataTables.fixedHeader.min.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/alertafy/alertify.min.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="http://192.168.1.112/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/alertafy/alertify.min.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="http://192.168.1.7:8080/gps-sql/assets/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
         <script type="text/javascript">
             function validar(){
                 var micampo = document.getElementById("strInput").value;
@@ -349,7 +349,7 @@ if (!empty($_POST["btnAgregar"])) {
                 $('.Guardar').click(function(){
                         var alldata = $("#tableTelefono").serialize();
                         alert(alldata);
-                        $.post('http://192.168.1.112/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
+                        $.post('http://192.168.1.7:8080/gps-sql/ajax/BusquedaTelefono.php', alldata, function(response){
                             console.log(response); 
                             $("#resultData").attr(response);
                         });
